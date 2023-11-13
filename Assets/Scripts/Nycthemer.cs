@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class Nycthemer : MonoBehaviour
 {
-    [SerializeField] private GameObject _directionalLight;
+    [Header("Day")]
+    [SerializeField] private GameObject _directionalLightDay;
+    [SerializeField] private GameObject[] _dayLights;
+
+    [Header("Night")]
+    [SerializeField] private GameObject _directionalLightNight;
     [SerializeField] private Material _nightSkybox;
     [SerializeField] private Material _daySkybox;
 
@@ -17,7 +22,7 @@ public class Nycthemer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.N))
         {
-            if (_directionalLight.GetComponent<Light>().color == new Color(1f, 1f, 1f))
+            if (RenderSettings.skybox == _daySkybox)
             {
                 Night();
             }
@@ -30,20 +35,31 @@ public class Nycthemer : MonoBehaviour
 
     private void Day()
     {
+        ActiveLights(_dayLights, true);
+        _directionalLightNight.SetActive(false);
         Color color = new Color(1f, 1f, 1f);
         RenderSettings.skybox = _daySkybox;
-        //lighting environnement intensity
         RenderSettings.ambientIntensity = 1f;
-        _directionalLight.GetComponent<Light>().color = color;
+        _directionalLightDay.SetActive(true);
     }
 
     private void Night()
     {
+        ActiveLights(_dayLights, false);
+        _directionalLightDay.SetActive(false);
         Color color = new Color(0.1f, 0.1f, 0.1f);
         RenderSettings.skybox = _nightSkybox;
-        //lighting environnement intensity
         RenderSettings.ambientIntensity = 0.2f;
-        _directionalLight.GetComponent<Light>().color = color;
-        _directionalLight.GetComponent<Light>().intensity = 0.1f;
+        _directionalLightNight.SetActive(true);
+        //_directionalLight.GetComponent<Light>().color = color;
+        //_directionalLight.GetComponent<Light>().intensity = 0.1f;
+    }
+
+    private void ActiveLights(GameObject[] lights, bool active = true)
+    {
+        foreach (GameObject light in lights)
+        {
+            light.SetActive(active);
+        }
     }
 }

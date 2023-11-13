@@ -9,20 +9,20 @@ public class MaterialChange : MonoBehaviour, IUsableObject
     private int _actualMaterial = -1;
     private void Start()
     {
-        _renderer = GetComponent<MeshRenderer>();
-        ChangeMaterial();
+        // _renderer = GetComponent<MeshRenderer>();
+        // ChangeMaterial();
     }
 
     public void UseObject() { ChangeMaterial(); }
 
     private void ChangeMaterial()
     {
-        _actualMaterial++;
-        if (_actualMaterial >= _materials.Length)
-        {
-            _actualMaterial = 0;
-        }
-        _renderer.material = _materials[_actualMaterial];
+        // _actualMaterial++;
+        // if (_actualMaterial >= _materials.Length)
+        // {
+        //     _actualMaterial = 0;
+        // }
+        // _renderer.material = _materials[_actualMaterial];
     }
 
 }

@@ -11,6 +11,8 @@ public class RayDetector : MonoBehaviour
     public bool popMenu = false;
     [SerializeField] private TextMeshProUGUI _alertTextKeyMenu;
 
+    [SerializeField] private MaterialMenu _materialMenu;
+
     void Start()
     {
         _alertTextKeyMenu.gameObject.SetActive(false);
@@ -31,20 +33,23 @@ public class RayDetector : MonoBehaviour
             if (hit.collider.GetComponent<IUsableObject>() != null)
             {
                 _reticule.color = Color.green;
-                Debug.Log("IUsableObject");
+                //Debug.Log("IUsableObject");
 
                 if (hit.collider.GetComponent<ScriptableGroup>() != null)
                 {
-                    Debug.Log("ScriptableGroup");
+                    //Debug.Log("ScriptableGroup");
                     _alertTextKeyMenu.gameObject.SetActive(true);
+
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        popMenu = true;
+                        hit.collider.GetComponent<ScriptableGroup>().GetScriptableObject();
+                        _materialMenu.LoadScriptable(hit.collider.GetComponent<ScriptableGroup>().GetScriptableObject());
+                        _materialMenu._menu.SetActive(true);
                     }
                 }
                 else
                 {
-                    Debug.Log("No ScriptableGroup");
+                    //Debug.Log("No ScriptableGroup");
                 }
 
 
@@ -54,12 +59,13 @@ public class RayDetector : MonoBehaviour
             {
                 _reticule.color = Color.white;
                 _alertTextKeyMenu.gameObject.SetActive(false);
+                _materialMenu._menu.SetActive(false);
             }
         }
         else
         {
             _reticule.color = Color.white;
-            _alertTextKeyMenu.gameObject.SetActive(false);
+            //_alertTextKeyMenu.gameObject.SetActive(false);
         }
         return null;
     }
